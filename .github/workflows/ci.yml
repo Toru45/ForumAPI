@@ -1,7 +1,7 @@
 name: Continuous Integration
  
 on: 
-  push:
+  pull_request:
     branches:
       - master
  
@@ -18,9 +18,9 @@ jobs:
       postgres:
         image: postgres
         env:
-         POSTGRES_USER: ${{ secrets.POSTRES_USER}}
-         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: mysecretpassword
+         POSTGRES_DB: forumapi_test
          
         options: >-
           --health-cmd pg_isready
@@ -39,17 +39,17 @@ jobs:
     - name: npm install migrate and test
       run: |
         npm install
-        npm run migrate:test up
+        npm run migrate up
         npm run test
       env:
         CI: true
-        HOST: ${{ secrets.HOST }}
-        PORT: ${{ secrets.PORT }}
-        PGHOST: ${{ secrets.PGHOST }}
-        PGPORT: ${{ secrets.PGPORT }}
-        PGUSER: ${{ secrets.PGUSER }}
-        PGPASSWORD: ${{ secrets.PGPASSWORD }}
-        PGDATABASE: ${{ secrets.PGDATABASE }}
-        ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
-        REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
+        HOST: localhost
+        PORT: 3000
+        PGHOST: localhost
+        PGPORT: 5432
+        PGUSER: postgres
+        PGPASSWORD: mysecretpassword
+        PGDATABASE: forumapi_test
+        ACCESS_TOKEN_KEY: secret
+        REFRESH_TOKEN_KEY: terces
         ACCESS_TOKEN_AGE: 3600
