@@ -4,3 +4,4 @@ package-lock.json
 coverage
 .env
 config/database/prod.json
+config/database/test.json
