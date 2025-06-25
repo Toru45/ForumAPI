@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  forumapi:
+    build: .
+    container_name: forumapi
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_HOST=database
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=forumapi
+      - DATABASE_PORT=5432
+    depends_on:
+      - database
+    restart: unless-stopped
+
+  database:
+    image: postgres:14-alpine
+    container_name: forumapi-db
+    environment:
+      - POSTGRES_DB=forumapi
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - forumapi-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  forumapi-db-data:
